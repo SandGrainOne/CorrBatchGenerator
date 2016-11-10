@@ -16,8 +16,12 @@ namespace Altinn.ExternalUtilities.CorrBatchGenerator
             Run<Program>(args);
         }
 
+        /// <summary>
+        /// Start of console application specific logic.
+        /// </summary>
         protected override void Execute()
         {
+            // This is where magic happens
         }
     }
 }
