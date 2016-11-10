@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Altinn.Batch.Correspondence;
+using Altinn.ExternalUtilities.CorrBatchGenerator.Utils;
 
 namespace Altinn.ExternalUtilities.CorrBatchGenerator
 {
@@ -20,6 +21,7 @@ namespace Altinn.ExternalUtilities.CorrBatchGenerator
         public static void Main(string[] args)
         {
             Correspondences cors = new Correspondences();
+            SftpClientHelper.TransferFiles();
         }
     }
 }
