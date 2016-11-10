@@ -21,7 +21,7 @@ namespace Altinn.ExternalUtilities.CorrBatchGenerator
         public static void Main(string[] args)
         {
             Correspondences cors = new Correspondences();
-            SftpClientHelper.TransferFiles();
+            //SftpClientHelper.TransferFiles();
         }
     }
 }
