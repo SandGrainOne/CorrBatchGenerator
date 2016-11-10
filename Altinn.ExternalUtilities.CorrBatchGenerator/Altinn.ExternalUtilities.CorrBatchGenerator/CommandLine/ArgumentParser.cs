@@ -8,7 +8,7 @@ using Altinn.ExternalUtilities.CorrBatchGenerator.Utils;
 namespace Altinn.ExternalUtilities.CorrBatchGenerator.CommandLine
 {
     /// <summary>
-    /// Parses command-line arguments for Altinn console applications.
+    /// Parses command-line arguments for console applications.
     /// </summary>
     /// <typeparam name="TArguments">
     /// The type that describes and represents the console's command-line arguments.
@@ -46,7 +46,7 @@ namespace Altinn.ExternalUtilities.CorrBatchGenerator.CommandLine
     ///     }
     /// Note that the above type has one required parameter, X (has no default value), and two optional parameters
     /// (that do have a default value). Also note the description does not say whether or not a parameter is optional,
-    /// as it is the AltinnConsole class that is responsible for presentation.
+    /// as it is the ConsoleBase class that is responsible for presentation.
     /// </remarks>
     internal class ArgumentParser<TArguments>
         where TArguments : ConsoleArguments, new()

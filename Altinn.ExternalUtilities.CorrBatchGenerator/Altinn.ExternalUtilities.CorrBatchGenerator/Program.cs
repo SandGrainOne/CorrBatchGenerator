@@ -5,7 +5,7 @@ namespace Altinn.ExternalUtilities.CorrBatchGenerator
     /// <summary>
     /// Console program class.
     /// </summary>
-    public class Program : AltinnConsole<CorrBatchGeneratorArguments>
+    public class Program : ConsoleBase<CorrBatchGeneratorArguments>
     {
         /// <summary>
         /// Console program start method.

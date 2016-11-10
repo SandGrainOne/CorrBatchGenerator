@@ -10,14 +10,13 @@ using Altinn.ExternalUtilities.CorrBatchGenerator.Utils;
 namespace Altinn.ExternalUtilities.CorrBatchGenerator.CommandLine
 {
     /// <summary>
-    /// Base class for Altinn console applications.
-    /// Provides command-line argument handling, a default error-handler, and convenience methods
-    /// (console-specific, e.g. using colors, or Altinn specific, e.g. logging).
+    /// Base class for console applications.
+    /// Provides command-line argument handling, a default error-handler, and convenience methods.
     /// </summary>
     /// <typeparam name="TArguments">
-    /// Type of arguments
+    /// Type of arguments.
     /// </typeparam>
-    public abstract class AltinnConsole<TArguments>
+    public abstract class ConsoleBase<TArguments>
         where TArguments : ConsoleArguments, new()
     {
         /// <summary>
@@ -32,14 +31,15 @@ namespace Altinn.ExternalUtilities.CorrBatchGenerator.CommandLine
         {
             get
             {
+                // StyleCop complains about one-liner.
+                // ReSharper disable once ConvertPropertyToExpressionBody
                 return new[] { "APPLICATION" };
             }
         }
 
         /// <summary>
-        /// Gets the object representing console arguments. The property values
-        /// on this object reflect parsed command-line arguments when provided,
-        /// or default values (defined by decorating the argument type with
+        /// Gets the object representing console arguments. The property values on this object reflect parsed
+        /// command-line arguments when provided, or default values (defined by decorating the argument type with
         /// DefaultValue attributes).
         /// </summary>
         protected TArguments Arguments { get; private set; }
@@ -55,7 +55,7 @@ namespace Altinn.ExternalUtilities.CorrBatchGenerator.CommandLine
         /// Command-line arguments.
         /// </param>
         /// <param name="timeSpanWait">How long the program waits before terminating.</param>
-        public static void Run<TConsole>(string[] args, int timeSpanWait = 30) where TConsole : AltinnConsole<TArguments>
+        public static void Run<TConsole>(string[] args, int timeSpanWait = 30) where TConsole : ConsoleBase<TArguments>
         {
             RunInternal<TConsole>(args, timeSpanWait);
         }
@@ -108,10 +108,8 @@ namespace Altinn.ExternalUtilities.CorrBatchGenerator.CommandLine
                 {
                     return Console.ReadKey(true);
                 }
-                else
-                {
-                    Thread.Sleep(128);
-                }
+
+                Thread.Sleep(128);
             }
 
             return null;
@@ -144,7 +142,7 @@ namespace Altinn.ExternalUtilities.CorrBatchGenerator.CommandLine
         /// Error messages
         /// </param>
         /// <remarks>
-        /// AltinnConsole parses arguments and checks that provided arguments are of the correct
+        /// ConsoleBase parses arguments and checks that provided arguments are of the correct
         /// type, e.g. "5" will work as argument value for an argument of type integer, but "5.5" will
         /// not.
         /// A console may perform additional validation by overriding this method. For instance,
@@ -162,16 +160,18 @@ namespace Altinn.ExternalUtilities.CorrBatchGenerator.CommandLine
         /// </param>
         protected virtual void PresentErrors(List<string> errorMessages)
         {
-            if (errorMessages.Count > 0)
+            if (errorMessages.Count <= 0)
             {
-                this.WriteLine(ConsoleColor.Red, "{0} {1}:", errorMessages.Count, errorMessages.Count > 1 ? "errors" : "error");
-                foreach (string msg in errorMessages)
-                {
-                    this.WriteLine(msg);
-                }
-
-                this.WriteLine();
+                return;
             }
+
+            this.WriteLine(ConsoleColor.Red, "{0} {1}:", errorMessages.Count, errorMessages.Count > 1 ? "errors" : "error");
+            foreach (string msg in errorMessages)
+            {
+                this.WriteLine(msg);
+            }
+
+            this.WriteLine();
         }
 
         /// <summary>
@@ -182,16 +182,18 @@ namespace Altinn.ExternalUtilities.CorrBatchGenerator.CommandLine
         /// </param>
         protected virtual void PresentWarnings(List<string> warningMessages)
         {
-            if (warningMessages.Count > 0)
+            if (warningMessages.Count <= 0)
             {
-                this.WriteLine(ConsoleColor.Yellow, "Warning");
-                foreach (string msg in warningMessages)
-                {
-                    this.WriteLine(msg);
-                }
-
-                this.WriteLine();
+                return;
             }
+
+            this.WriteLine(ConsoleColor.Yellow, "Warning");
+            foreach (string msg in warningMessages)
+            {
+                this.WriteLine(msg);
+            }
+
+            this.WriteLine();
         }
 
         /// <summary>
@@ -411,29 +413,29 @@ namespace Altinn.ExternalUtilities.CorrBatchGenerator.CommandLine
             }
         }
 
-        private static void RunInternal<TConsole>(string[] args, int waitTimeSpan = 30) where TConsole : AltinnConsole<TArguments>
+        private static void RunInternal<TConsole>(string[] args, int waitTimeSpan = 30) where TConsole : ConsoleBase<TArguments>
         {
-            AltinnConsole<TArguments> console = (AltinnConsole<TArguments>)Activator.CreateInstance(typeof(TConsole));
+            ConsoleBase<TArguments> consoleBase = (ConsoleBase<TArguments>)Activator.CreateInstance(typeof(TConsole));
             try
             {
-                if (console.Initialize(args))
+                if (consoleBase.Initialize(args))
                 {
-                    console.Execute();
+                    consoleBase.Execute();
                 }
                 else
                 {
-                    console.WriteUsage();
+                    consoleBase.WriteUsage();
                 }
             }
             catch (Exception ex)
             {
-                console.WriteLine(ConsoleColor.Red, "Exception caught:\r\n");
-                console.WriteLine(ex.Message);
-                if (console.Arguments != null)
+                consoleBase.WriteLine(ConsoleColor.Red, "Exception caught:\r\n");
+                consoleBase.WriteLine(ex.Message);
+                if (consoleBase.Arguments != null)
                 {
-                    if (console.Arguments.Debug)
+                    if (consoleBase.Arguments.Debug)
                     {
-                        console.WriteLine("\r\n{0}", ex);
+                        consoleBase.WriteLine("\r\n{0}", ex);
                     }
                 }
                 else
@@ -447,8 +449,8 @@ namespace Altinn.ExternalUtilities.CorrBatchGenerator.CommandLine
             }
             finally
             {
-                console.WriteLine("\r\nPress any key to exit..");
-                console.AwaitKey(TimeSpan.FromSeconds(waitTimeSpan));
+                consoleBase.WriteLine("\r\nPress any key to exit..");
+                consoleBase.AwaitKey(TimeSpan.FromSeconds(waitTimeSpan));
             }
         }
 

@@ -52,7 +52,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommandLine\AltinnConsole.cs" />
+    <Compile Include="CommandLine\ConsoleBase.cs" />
     <Compile Include="CommandLine\ArgumentInfo.cs" />
     <Compile Include="CommandLine\ArgumentParser.cs" />
     <Compile Include="CommandLine\ConsoleArguments.cs" />
