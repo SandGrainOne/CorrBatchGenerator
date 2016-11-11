@@ -18,8 +18,10 @@ namespace Altinn.ExternalUtilities.CorrBatchGenerator.Utils
                     HostName = ConfigurationManager.AppSettings["ftpHostName"],
                     UserName = ConfigurationManager.AppSettings["ftpUserName"],
                     Password = ConfigurationManager.AppSettings["ftpPassword"],
-                    SshHostKeyFingerprint = ConfigurationManager.AppSettings["sshHostKeyFingerprint"]
+                    GiveUpSecurityAndAcceptAnySshHostKey = true,
+                    //SshHostKeyFingerprint = ConfigurationManager.AppSettings["sshHostKeyFingerprint"]
                 };
+
 
                 using (Session session = new Session())
                 {
@@ -27,12 +29,10 @@ namespace Altinn.ExternalUtilities.CorrBatchGenerator.Utils
                     session.Open(sessionOptions);
 
                     // Upload files
-                    TransferOptions transferOptions = new TransferOptions();
-                    transferOptions.TransferMode = TransferMode.Binary;
+                    TransferOptions transferOptions = new TransferOptions { TransferMode = TransferMode.Binary };
 
-                    TransferOperationResult transferResult;
-                    //transferResult = session.PutFiles(@"d:\toupload\*", "/home/user/", false, transferOptions);
-                    transferResult = session.PutFiles(ConfigurationManager.AppSettings["localPathToFilesToUpload"], ConfigurationManager.AppSettings["remotePath"], false, transferOptions);
+                    TransferOperationResult transferResult = session.PutFiles(ConfigurationManager.AppSettings["localPathToFilesToUpload"],
+                                                                              ConfigurationManager.AppSettings["remotePath"], false, transferOptions);
 
                     // Throw on any error
                     transferResult.Check();
