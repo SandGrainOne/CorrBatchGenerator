@@ -7,7 +7,7 @@ namespace Altinn.ExternalUtilities.CorrBatchGenerator
     /// <summary>
     /// Console program class.
     /// </summary>
-    public class Program : AltinnConsole<CorrBatchGeneratorArguments>
+    public class Program : ConsoleBase<CorrBatchGeneratorArguments>
     {
         /// <summary>
         /// Console program start method.
@@ -22,8 +22,12 @@ namespace Altinn.ExternalUtilities.CorrBatchGenerator
             //SftpClientHelper.TransferFiles();
         }
 
+        /// <summary>
+        /// Start of console application specific logic.
+        /// </summary>
         protected override void Execute()
         {
+            // This is where magic happens
         }
     }
 }
