@@ -5,8 +5,14 @@ using WinSCP;
 
 namespace Altinn.ExternalUtilities.CorrBatchGenerator.Utils
 {
+    /// <summary>
+    /// Helper class for common operations related to SFTP.
+    /// </summary>
     public class SftpClientHelper
     {
+        /// <summary>
+        /// Perform a SFTP transfer of files from a configured local folder to a configured remote folder.
+        /// </summary>
         public static void TransferFiles()
         {
             try
@@ -19,9 +25,8 @@ namespace Altinn.ExternalUtilities.CorrBatchGenerator.Utils
                     UserName = ConfigurationManager.AppSettings["ftpUserName"],
                     Password = ConfigurationManager.AppSettings["ftpPassword"],
                     GiveUpSecurityAndAcceptAnySshHostKey = true,
-                    //SshHostKeyFingerprint = ConfigurationManager.AppSettings["sshHostKeyFingerprint"]
+                    ////SshHostKeyFingerprint = ConfigurationManager.AppSettings["sshHostKeyFingerprint"]
                 };
-
 
                 using (Session session = new Session())
                 {

@@ -57,14 +57,20 @@
     <Compile Include="CommandLine\ArgumentParser.cs" />
     <Compile Include="CommandLine\ConsoleArguments.cs" />
     <Compile Include="CorrBatchGeneratorArguments.cs" />
+    <Compile Include="Entities\CorrespondenceInput.cs" />
+    <Compile Include="Exceptions\DatasourceReaderException.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Schema\schemas_altinn_no_services_intermediary_correspondence_2016_02.cs" />
+    <Compile Include="Utils\DatasourceReader.cs" />
     <Compile Include="Utils\ReflectionUtil.cs" />
     <Compile Include="Utils\SftpClientHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <Content Include="Data\ValidTwoRows.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="packages.config" />
     <None Include="Schema\schemas.altinn.no.services.intermediary.correspondence.2016.02.xsd">
       <SubType>Designer</SubType>
