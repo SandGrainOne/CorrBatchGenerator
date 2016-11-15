@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Configuration;
 using System.IO;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
-
+using System.Xml.Serialization;
 using Altinn.Batch.Correspondence;
-
 using Altinn.ExternalUtilities.CorrBatchGenerator.CommandLine;
 using Altinn.ExternalUtilities.CorrBatchGenerator.Entities;
 using Altinn.ExternalUtilities.CorrBatchGenerator.Utils;
@@ -46,6 +43,7 @@ namespace Altinn.ExternalUtilities.CorrBatchGenerator
             };
 
             int index = 0;
+
             // For datasettet lages en XML fil med alle correspence fra csv fila
             // systemUserCode hentes fra app.config
             foreach (CorrespondenceInput correspondence in reader.GetEnumerable())
@@ -60,7 +58,13 @@ namespace Altinn.ExternalUtilities.CorrBatchGenerator
                     {
                         LanguageCode = correspondence.LanguageCode,
                         MessageTitle = correspondence.MessageTitle,
-                    }
+                        MessageBody = correspondence.MessageBody,
+                        MessageSummary = correspondence.MessageSummary,
+                    },
+                    VisibleDateTime = correspondence.VisibleDateTime,
+                    VisibleDateTimeSpecified = true,
+                    IsReservable = correspondence.IsReservable,
+                    IsReservableSpecified = true,
                 };
             }
 
@@ -79,11 +83,21 @@ namespace Altinn.ExternalUtilities.CorrBatchGenerator
             // XML filene lagres på local path ihht konfigurasjonen localPathToFilesToUpload
             using (FileStream fileStream = File.Create(destfile))
             {
-                System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(corrColl.GetType());
+                XmlSerializer serializer = new XmlSerializer(corrColl.GetType());
                 serializer.Serialize(fileStream, corrColl);
             }
 
-            ////SftpClientHelper.TransferFiles();
+            XmlValidator.Validate(destfile);
+
+            try
+            {
+                SftpClientHelper.TransferFiles();
+                File.Delete(destfile);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

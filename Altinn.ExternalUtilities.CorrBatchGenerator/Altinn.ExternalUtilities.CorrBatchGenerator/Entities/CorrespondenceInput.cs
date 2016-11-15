@@ -1,4 +1,6 @@
-﻿namespace Altinn.ExternalUtilities.CorrBatchGenerator.Entities
+﻿using System;
+
+namespace Altinn.ExternalUtilities.CorrBatchGenerator.Entities
 {
     /// <summary>
     /// Represents data used as input when creating a correspondence
@@ -20,5 +22,25 @@
         /// Gets or sets the message title 
         /// </summary>
         public string MessageTitle { get; set; }
+
+        /// <summary>
+        /// Gets or sets the message body
+        /// </summary>
+        public string MessageBody { get; set; }
+
+        /// <summary>
+        /// Gets or sets the visible date time
+        /// </summary>
+        public DateTime VisibleDateTime { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether it is RESERVABLE
+        /// </summary>
+        public bool IsReservable { get; set; }
+
+        /// <summary>
+        /// Gets or sets the message summary
+        /// </summary>
+        public string MessageSummary { get; set; }
     }
 }

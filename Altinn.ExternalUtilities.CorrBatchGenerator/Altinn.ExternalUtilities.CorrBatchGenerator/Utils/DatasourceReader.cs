@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
-
 using Altinn.ExternalUtilities.CorrBatchGenerator.Entities;
-using Altinn.ExternalUtilities.CorrBatchGenerator.Exceptions;
 
 namespace Altinn.ExternalUtilities.CorrBatchGenerator.Utils
 {
@@ -29,11 +26,16 @@ namespace Altinn.ExternalUtilities.CorrBatchGenerator.Utils
         /// </summary>
         public string FilePath { get; private set; }
 
-
         /// <summary>
-        /// Gets the number of Correpondences in the data source file
+        /// Gets the number of correspondences in the data source file
         /// </summary>
-        public int Count => this.correspondenceInput.Count;
+        public int Count
+        {
+            get
+            {
+                return this.correspondenceInput.Count;
+            }
+        }
 
         /// <summary>
         /// Gets a Correspondence in the file
@@ -41,8 +43,14 @@ namespace Altinn.ExternalUtilities.CorrBatchGenerator.Utils
         /// <param name="index">zero based index</param>
         /// <returns>The correspondence</returns>
         /// <exception cref="IndexOutOfRangeException">When illegal index</exception>
-        public CorrespondenceInput this[int index] => this.correspondenceInput[index];
-
+        public CorrespondenceInput this[int index]
+        {
+            get
+            {
+                return this.correspondenceInput[index];
+            }
+        }
+        
         /// <summary>
         /// Loading the file to internal structure
         /// </summary>
@@ -57,7 +65,13 @@ namespace Altinn.ExternalUtilities.CorrBatchGenerator.Utils
 
             using (StreamReader file = new StreamReader(this.FilePath))
             {
-                string line;
+                // Read the header line
+                string line = file.ReadLine();
+                if (string.IsNullOrEmpty(line))
+                {
+                    return;
+                }
+
                 while ((line = file.ReadLine()) != null)
                 {
                     string[] cols = line.Split(',', ';');
@@ -66,6 +80,10 @@ namespace Altinn.ExternalUtilities.CorrBatchGenerator.Utils
                         Reportee = cols[0],
                         LanguageCode = cols[1],
                         MessageTitle = cols[2],
+                        MessageBody = cols[3],
+                        MessageSummary = cols[4],
+                        VisibleDateTime = DateTime.Parse(cols[5]),
+                        IsReservable = bool.Parse(cols[6]),
                     };
                     this.correspondenceInput.Add(corinput);
                 }
@@ -73,15 +91,12 @@ namespace Altinn.ExternalUtilities.CorrBatchGenerator.Utils
         }
 
         /// <summary>
-        /// Returns an Enumerable over all Correspondence in the source file
+        /// Gets an Enumerable over all Correspondence in the source file
         /// </summary>
-        /// <returns>Enumerable</returns>
+        /// <returns>Correspondence input enumerable</returns>
         public IEnumerable<CorrespondenceInput> GetEnumerable()
         {
             return this.correspondenceInput;
         }
-
     }
-
-
 }

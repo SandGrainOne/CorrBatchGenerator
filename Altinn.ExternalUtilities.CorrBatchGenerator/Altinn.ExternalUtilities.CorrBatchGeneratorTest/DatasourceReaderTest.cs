@@ -1,12 +1,6 @@
-﻿using System.Data;
-using System.Data.OleDb;
-using System.IO;
-
-using Altinn.ExternalUtilities.CorrBatchGenerator.Exceptions;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+﻿using System.IO;
 using Altinn.ExternalUtilities.CorrBatchGenerator.Utils;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Altinn.ExternalUtilities.CorrBatchGeneratorTest
 {
@@ -17,7 +11,7 @@ namespace Altinn.ExternalUtilities.CorrBatchGeneratorTest
     public class DatasourceReaderTest
     {
         /// <summary>
-        /// Senario:
+        /// Scenario: Reading a null file
         /// </summary>
         [TestMethod]
         public void ReadTest_no_file_gives_no_content()
@@ -27,7 +21,9 @@ namespace Altinn.ExternalUtilities.CorrBatchGeneratorTest
             Assert.AreEqual(0, reader.Count);
         }
 
-
+        /// <summary>
+        /// Scenario: Giving a file path where directory does not exists
+        /// </summary>
         [TestMethod]
         public void ReadTest_file_not_found_throws_exception()
         {
@@ -45,7 +41,9 @@ namespace Altinn.ExternalUtilities.CorrBatchGeneratorTest
             Assert.IsNotNull(exception);
         }
 
-
+        /// <summary>
+        /// Scenario: Read a CSV file which is empty
+        /// </summary>
         [TestMethod]
         public void ReadTest_file_is_empty_gives_empty_Dataset()
         {
@@ -54,7 +52,9 @@ namespace Altinn.ExternalUtilities.CorrBatchGeneratorTest
             Assert.AreEqual(0, reader.Count);
         }
 
-
+        /// <summary>
+        /// Scenario: Reading a valid file 
+        /// </summary>
         [TestMethod]
         public void ReadTest_file_is_valid_gives_two_Correspondances()
         {
@@ -64,25 +64,5 @@ namespace Altinn.ExternalUtilities.CorrBatchGeneratorTest
             Assert.AreEqual("1001", reader[0].Reportee);
             Assert.AreEqual("1002", reader[1].Reportee);
         }
-
-
-        /*
-        [TestMethod]
-        public void ReadTest_file_wrong_content_throws_exception()
-        {
-            DatasourceReader reader = new DatasourceReader(@"Testdata\Invalid.csv");
-            DatasourceReaderException exception = null;
-            try
-            {
-                reader.ReadFile();
-            }
-            catch (DatasourceReaderException ex)
-            {
-                exception = ex;
-            }
-            Assert.IsNotNull(exception);
-        }
-        */
-
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Configuration;
-
 using WinSCP;
 
 namespace Altinn.ExternalUtilities.CorrBatchGenerator.Utils

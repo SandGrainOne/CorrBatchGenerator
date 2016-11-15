@@ -57,9 +57,6 @@
     <Content Include="Testdata\Empty.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Testdata\Invalid.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Testdata\ValidTwoRows.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
